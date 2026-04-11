@@ -22,67 +22,74 @@
   <link rel="stylesheet" href="assets/css/screen.css" media="screen" />
   <link rel="stylesheet" href="assets/css/print.css" media="print" />
   <link rel="stylesheet" href="assets/css/layout.css" media="screen" />
-</head>
+<!-- <link rel="stylesheet" type="text/css" href="./assets/css/typography.css" /> -->
+    <title></title>
+  </head>
 
-<body>
-  <app-container>
-    <header></header>
-    <nav>
-      <ul>
-        <li>About</li>
-        <li>Classes</li>
-        <li>Events</li>
-        <li>Policy</li>
-        <li>Contact</li>
-      </ul>
-    </nav>
-    <main>
-      <article>
-        <h3>Call to action</h3>
-        <section></section>
-        <section></section>
-      </article>
-      <article>
-        <h3>Intro</h3>
-        <section></section>
-        <section></section>
-      </article>
-      <article>
-        <h3>Events</h3>
-        <section></section>
-        <section></section>
-      </article>
-      <article>
-        <h3>Instructors and Staff</h3>
-        <section>
-          <ul>
-            <li>Elizabeth Hawkins</li>
-            <li>Becca Collier</li>
-            <li>Sara Moorman</li>
-            <li></li>
-            <li></li>
-          </ul>
-        </section>
-      </article>
-      <article>
-        <h3>Gallery</h3>
-        <section></section>
-      </article>
-      <article>
-        <h3>Contact</h3>
-        <section></section>
-        <section></section>
-      </article>
-    </main>
-    <aside>
-      <h3>Contact</h3>
-      <section></section>
-      <section></section>
-    </aside>
-    <footer>
-      <h3>Contact</h3>
-      <section></section>
-      <section></section>
+  <body>
+    <app-container>
+      <app-banner></app-banner>
+      <header>
+        <app-logo></app-logo>
+        <app-user></app-user>
+      </header>
+      <nav>
+        <label>
+          <input type="radio" aria-hidden="true" name="nav">
+        </label>
+        <label>
+          <input type="radio" aria-hidden="true" name="nav">
+        </label>
+        <label>
+          <input type="radio" aria-hidden="true" name="nav">
+        </label>
+        <label>
+          <input type="radio" aria-hidden="true" name="nav">
+        </label>
+        <label>
+          <input type="radio" aria-hidden="true" name="nav">
+        </label>
+        <label>
+          <input type="checkbox" aria-hidden="true">
+        </label>
+      </nav>
+      <main>
+        <article>
+          <section>
+            <h1></h1>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+          </section>
+        </article>
+      </main>
+      <aside></aside>
+      <footer>
+        <app-legal></app-legal>
+        <app-version></app-version>
+      </footer>
+      <app-banner></app-banner>
+    </app-container>
+    <script type="module" src="assets/js/app.js"></script>
+  </body>
+
+</html>
     </footer>
   </app-container>
   <script src="/assets/js/scripts.js" type="module"></script>
