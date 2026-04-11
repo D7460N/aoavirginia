@@ -1,0 +1,479 @@
+@import url("https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap");
+/* ^^^ @import must always be top ^^^ */
+
+/*
+MARK: STARTER SETUP
+
+Features:
+- Platform-agnostic
+- Project-agnostic
+- Framework-agnostic
+- Data-agnostic
+- Minimal reset
+- Minimal nesting
+- Minimal markup
+- Semantic markup
+- Zero-dependencies
+- Zero div
+- Zero span
+- Zero id
+- Zero class
+- Zero data-*
+- Light/dark/system mode
+- Liquid typography
+- Cross-browser formatting consensus
+- Image behavior conformity
+- Transition consistency
+- JS for API/CRUD only
+*/
+
+/* MARK: RESET
+*/
+*,
+* *,
+*:before,
+*:after,
+::after,
+::before {
+  --transition-property: display, color, border, opacity;
+  --transition-duration: 250ms;
+  --transition-timing-function: ease;
+
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition-behavior: allow-discrete;
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+  transition-timing-function: var(--transition-timing-function);
+}
+
+/* https://drafts.csswg.org/selectors-4/#typedef-forgiving-selector-list
+- Forgiving selector list
+- Specificity == 0
+- Allows easy override */
+:where(img, picture, video, canvas, svg) {
+  display: block;
+  max-inline-size: 100%;
+}
+
+:where(button, input, select, textarea) {
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+  color: currentColor;
+}
+
+:root {
+  --transition-duration: 250ms;
+  --transition-property: visibility, opacity, display, transform, background,
+    background-color, border-color, color, min-width;
+  --transition-timing-function: ease-in;
+  color-scheme: light dark;
+  font-family: Oxanium, sans-serif;
+  font-size: clamp(1rem, calc(1rem + 0.8cqi), 1.75rem);
+  /* https://html-css-tip-of-the-week.netlify.app/tip/interpolate-size/
+  https://12daysofweb.dev/2024/calc-size-and-interpolate-size/ */
+  interpolate-size: allow-keywords;
+  scroll-behavior: smooth;
+
+  --surface-1: light-dark(oklch(80% 10% 250), oklch(10% 5% 250));
+  --surface-2: light-dark(oklch(90% 7% 250), oklch(20% 5% 250));
+  --surface-3: light-dark(oklch(100% 8% 250), oklch(30% 5% 250));
+  --text-1: light-dark(oklch(10% 5% 250), oklch(90% 5% 250));
+  --text-2: light-dark(oklch(20% 5% 250), oklch(80% 5% 250));
+
+  background: radial-gradient(circle in oklab,
+      var(--surface-2),
+      var(--surface-1)) fixed;
+  color: var(--text-1);
+}
+
+/* DOM order */
+:where(app-container, header, main, article, section, aside, footer) {
+  display: grid;
+}
+
+/* main {
+  border: solid 1px color-mix(in srgb, currentColor 50%, transparent);
+  border-radius: 0.3rem;
+} */
+
+/* MARK: LAYOUT */
+app-container {
+  height: 100dvh;
+  grid-template-rows: auto auto auto 1fr auto auto auto;
+  align-items: start;
+}
+
+header,
+footer {
+  grid-template-columns: repeat(auto-fit, minmax(min(6rem, 100%), 1fr));
+}
+
+app-logo,
+app-legal {
+  justify-self: start;
+  padding-inline-start: 1rem;
+  padding-block: 1rem;
+  display: none;
+}
+
+app-user,
+app-version {
+  justify-self: end;
+  padding-inline-end: 1rem;
+  padding-block: 1rem;
+  display: none;
+}
+
+main {
+  height: 100%;
+  align-content: start;
+}
+
+:where(article, section) {
+  border: solid 1px color-mix(in srgb, currentColor 0%, transparent);
+  height: 100%;
+}
+
+/* Only content level elements receive padding/margin */
+:where(h1, p) {
+  padding-inline: 1rem;
+  padding-block-start: 1rem;
+  display: none;
+}
+
+p:last-of-type {
+  padding: 1rem;
+}
+
+app-logo:not(:empty),
+app-user:not(:empty),
+app-legal:not(:empty),
+app-version:not(:empty),
+h1:not(:empty),
+p:not(:empty) {
+  display: block;
+}
+
+/* MARK: TYPOGRAPHY */
+/* h1 {
+  font-size: 1.3rem;
+}
+p {
+  font-size: 0.9rem;
+  padding-block-start: 0;
+}
+
+a {
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+} */
+
+
+/* MARK: HEURISTICS */
+/* intrinsic sticky headers */
+app-container,
+main,
+article {
+  overflow: hidden;
+}
+
+section {
+  overflow: auto;
+  background-color: color-mix(in oklab, canvas 10%, transparent);
+}
+
+/* aside hidden until receives content */
+/* aside {
+  display: none;
+
+  &:not(:empty) {
+    display: grid;
+  }
+} */
+
+/* Intrinsic space trigger */
+nav {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(5rem, 100%), min-content));
+  justify-content: end;
+
+  container-type: inline-size;
+  container-name: nav;
+  --min: 5rem;
+  /* single source of truth */
+  --count: 5;
+  /* set per component instance */
+  --threshold: calc(var(--min) * var(--count));
+
+  label {
+    padding-inline: 0.5rem;
+    padding-block: 0.5em;
+    cursor: pointer;
+    user-select: none;
+    opacity: 0.6;
+
+    &:has(input:checked) {
+      opacity: 1;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:first-of-type {
+      padding-inline-start: 1rem;
+    }
+
+    &:nth-last-of-type(2) {
+      padding-inline-end: 1rem;
+    }
+
+    &:nth-last-of-type(1) {
+      display: none;
+    }
+  }
+}
+
+/* nav > label:has(> input[type="checkbox"][aria-hidden="true"]) {
+  display: none;
+} */
+
+@container nav (max-width: 25rem) {
+  nav {
+    position: relative;
+    z-index: 10;
+  }
+
+  nav > label {
+    display: none;
+    grid-column: 1 / -1;
+  }
+
+  nav > label:has(> input[type="checkbox"]) {
+    display: grid;
+    place-items: center;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    margin-inline-start: auto;
+    position: relative;
+    z-index: 11;
+    cursor: pointer;
+  }
+
+  /* hide checkbox */
+  nav > label:last-of-type > input[type="checkbox"][aria-hidden="true"] {
+    appearance: none;
+    margin: 0;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+  }
+
+  nav > label:has(> input[type="checkbox"])::before,
+  nav > label:has(> input[type="checkbox"])::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: 1.5rem;
+    block-size: 0.125rem;
+    background: currentColor;
+    border-radius: 999px;
+    transform-origin: center;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
+    z-index: 2;
+  }
+
+  nav > label:has(> input[type="checkbox"])::before {
+    transform: translate(-50%, calc(-50% - 0.4rem));
+    box-shadow: 0 0.4rem 0 currentColor;
+  }
+
+  nav > label:has(> input[type="checkbox"])::after {
+    transform: translate(-50%, calc(-50% + 0.4rem));
+  }
+
+  nav > label:last-of-type:has(> input[type="checkbox"]:checked)::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+    box-shadow: none;
+  }
+
+  nav > label:last-of-type:has(> input[type="checkbox"]:checked)::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  nav::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline: 0;
+    block-size: calc(100dvh - 100%);
+    background: color-mix(in oklab, canvas 75%, transparent);
+    backdrop-filter: blur(0.3rem);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 9;
+  }
+
+  nav > label:not(:has(> input[type="checkbox"])) {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline: 0;
+    display: grid;
+    align-content: start;
+    padding: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  nav:has(> label:last-of-type > input[type="checkbox"][aria-hidden="true"]:checked)::before {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  nav:has(> label:last-of-type > input[type="checkbox"][aria-hidden="true"]:checked) > label:not(:last-of-type) {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+
+
+/* @container nav (max-width: 25rem) {
+  label {
+    grid-column: 1 / -1;
+    padding-inline-start: 1rem;
+    display: none;
+  }
+
+  label:has(> input[type="checkbox"][aria-hidden="true"]) {
+    display: grid;
+    place-items: center;
+    inline-size: 2.75rem;
+    cursor: pointer;
+    position: relative;
+  }
+
+  label:has(> input[type="checkbox"][aria-hidden="true"]) > input {
+    appearance: none;
+    margin: 0;
+    position: absolute;
+    inset: 0;
+  }
+
+  label:has(> input[type="checkbox"][aria-hidden="true"]) {
+    background:
+      linear-gradient(currentColor 0 0) center / 1.5rem 0.125rem no-repeat;
+  }
+
+  label:has(> input[type="checkbox"][aria-hidden="true"])::before,
+  label:has(> input[type="checkbox"][aria-hidden="true"])::after {
+    content: "";
+    position: absolute;
+    inline-size: 1.5rem;
+    block-size: 0.125rem;
+    background: currentColor;
+    border-radius: 999px;
+    transition:
+      rotate 0.2s ease,
+      translate 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  label:has(> input[type="checkbox"][aria-hidden="true"])::before {
+    translate: 0 -0.4rem;
+  }
+
+  label:has(> input[type="checkbox"][aria-hidden="true"])::after {
+    translate: 0 0.4rem;
+  }
+
+  label:has(> input[type="checkbox"][aria-hidden="true"]:checked)::before {
+    translate: 0 0;
+    rotate: 45deg;
+  }
+
+  label:has(> input[type="checkbox"][aria-hidden="true"]:checked)::after {
+    translate: 0 0;
+    rotate: -45deg;
+  }
+
+  label:has(> input[type="checkbox"][aria-hidden="true"]:checked) {
+    background: none;
+  }
+} */
+
+/* State machine */
+[aria-hidden="true"] {
+  display: none;
+}
+
+/* MARK: LOADING */
+:root:has(article h1:empty)::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 3rem;
+  height: 3rem;
+  margin: auto;
+  border: 0.35rem solid color-mix(in srgb, currentColor 25%, transparent);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  pointer-events: none;
+  opacity: 1;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/**
+ * Scrolling shadows by @kizmarh and @leaverou
+ * Only works in browsers supporting background-attachment: local; & CSS gradients
+ * Degrades gracefully
+ */
+
+/* section {
+	overflow: auto;
+	width: 200px;
+	max-height: 200px;
+	margin: 50px auto;
+
+	background: */
+/* Shadow covers */
+/* linear-gradient(white 30%, rgba(255,255,255,0)),
+		linear-gradient(rgba(255,255,255,0), white 70%) 0 100%, */
+
+/* Shadows */
+/* radial-gradient(50% 0, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)),
+		radial-gradient(50% 100%,farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+	background: */
+/* Shadow covers */
+/* linear-gradient(white 30%, rgba(255,255,255,0)),
+		linear-gradient(rgba(255,255,255,0), white 70%) 0 100%, */
+
+/* Shadows */
+/* radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.2), rgba(0,0,0,0)),
+		radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+	background-repeat: no-repeat; */
+/* background-color: white; */
+/* background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px; */
+
+/* Opera doesn't support this in the shorthand */
+/* background-attachment: local, local, scroll, scroll;
+} */
